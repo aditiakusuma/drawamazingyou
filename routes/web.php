@@ -21,6 +21,10 @@ Route::get('/welcome', function () {
 });
 
 Auth::routes();
+// Side Bar
+Route::get('/produk', 'ProductController@index');
+
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 
