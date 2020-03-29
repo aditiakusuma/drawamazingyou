@@ -134,24 +134,34 @@
         </div>
       </li>
       
-        @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                    <li class="nav-item d-none d-sm-inline-block">
-                        <a class="nav-link" href="{{ url('/home') }}">Home</a>
-                    </li>
-                    @else
-                    <li class="nav-item d-none d-sm-inline-block">
-                        <a class="nav-link" href="{{ route('login') }}">Login</a>
-                    </li>
-                        @if (Route::has('register'))
-                        <li class="nav-item d-none d-sm-inline-block">
-                            <a class="nav-link" href="{{ route('register') }}">Register</a>
-                        </li>
-                        @endif
-                    @endauth
-                </div>
-            @endif
+      @guest
+      <li class="nav-item">
+          <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+      </li>
+      @if (Route::has('register'))
+          <li class="nav-item">
+              <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+          </li>
+      @endif
+      @else
+          <li class="nav-item dropdown">
+              <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                  {{ Auth::user()->name }} <span class="caret"></span>
+              </a>
+
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="{{ route('logout') }}"
+                    onclick="event.preventDefault();
+                                  document.getElementById('logout-form').submit();">
+                      {{ __('Logout') }}
+                  </a>
+
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                      @csrf
+                  </form>
+              </div>
+          </li>
+      @endguest
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -164,7 +174,7 @@
            alt="AdminLTE Logo"
            class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">Drawamazingyou 3</span>
+      <span class="brand-text font-weight-light">Drawamazingyou</span>
     </a>
 
     <!-- Sidebar -->
@@ -175,7 +185,12 @@
           <img src="/adminlte/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          @guest
+          <a href="#" class="d-block">Guest</a>
+          @else
+            <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+          @endguest
+          
         </div>
       </div>
 
