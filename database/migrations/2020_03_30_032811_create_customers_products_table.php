@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBuysTable extends Migration
+class CreateCustomersProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateBuysTable extends Migration
      */
     public function up()
     {
-        Schema::create('buys', function (Blueprint $table) {
+        Schema::create('customers_products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('id_customer');
-            $table->unsignedInteger('id_product');
-            $table->integer('harga_total');
+            $table->unsignedInteger('customer_id');
+            $table->unsignedInteger('product_id');
             $table->dateTime('tanggal_pembelian');
             $table->timestamps();
         });
@@ -30,6 +29,6 @@ class CreateBuysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('buys');
+        Schema::dropIfExists('customers_products');
     }
 }

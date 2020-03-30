@@ -3,12 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Product;
 
 class Customer extends Model
 {
-    public function product()
-    {
-        return $this->hasMany(Product::class);
-    }
+    // protected $table = "customers";
     
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
+    }
+
 }

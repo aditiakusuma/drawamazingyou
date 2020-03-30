@@ -23,6 +23,8 @@ Route::get('/welcome', function () {
 Auth::routes();
 // Side Bar
 Route::get('/produk', 'ProductController@index');
+Route::get('/customer', 'CustomerController@index');
+Route::get('/buy', 'BuyController@index');
 
 
 

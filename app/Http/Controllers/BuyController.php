@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Buy;
+use App\Customer;
+use App\Product;
 use Illuminate\Http\Request;
 
 class BuyController extends Controller
@@ -14,7 +15,20 @@ class BuyController extends Controller
      */
     public function index()
     {
-        //
+        $customers = Customer::get();
+
+        return view('buy.index', compact('customers'));
+
+        // foreach ($customer as $customer) {
+        //     foreach ($customer->products as $product) {
+
+        //     }
+        // }
+        // for ($i = 0; $i < $count; $i++)
+        // {
+        //     $harga+=$harga;
+        // }
+        // return view('buy.index', compact('harga'));
     }
 
     /**
