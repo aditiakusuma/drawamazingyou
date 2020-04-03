@@ -16,7 +16,9 @@ class CreateCustomersProductsTable extends Migration
         Schema::create('customers_products', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers');
             $table->unsignedInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products');
             $table->dateTime('tanggal_pembelian');
             $table->timestamps();
         });

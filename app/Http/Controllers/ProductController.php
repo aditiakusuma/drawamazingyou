@@ -15,6 +15,12 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::All();
+        
+        return response()->json([
+            'status' =>true,
+            'data' => $products,
+            200]);
+        
         return view('product.index',compact('products'));
     }
 

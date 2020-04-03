@@ -16,7 +16,12 @@ class CustomerController extends Controller
     {
         $customers= Customer::All();
         
-        return view('customer.index', compact('customers'));
+        return response()->json([
+            'status' => true,
+            'data' => $customers, 
+            200]);
+        
+        //return view('customers.index', compact('customers'));
     }
 
     /**
@@ -37,7 +42,41 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'nama' => 'required',
+            'telepon' => 'required',
+            'email' => 'required'
+        ]);
+        
+        $nama = $request->input('nama');
+        $telepon = $request->input('telepon');
+        $email = $request->input('email');
+
+        $customer = new Customer([
+            'nama' => $nama,
+            'telepon' => $telepon,
+            'email' => $email
+        ]);
+
+        if ($customer->save()) {
+            $customer->index =[
+                'href' => 'api/customers',
+                'method' => 'GET',
+            ];
+
+            $response = [
+                'msg' => 'created',
+                'data' => $customer
+            ];
+    
+            return response()->json($response, 201);
+        }
+
+        $response = [
+            'msg' => 'ERROR'
+        ];
+
+        return response()->json($response, 404);
     }
 
     /**
@@ -48,7 +87,14 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        // $show= Customer::where('id','=', $customer)->get();
+        // dd($show);
+        return response()->json([
+            'status' => true,
+            'data' => $customer, 
+            200]);
+
+            //return view('customers.show', compact('customer'));
     }
 
     /**
