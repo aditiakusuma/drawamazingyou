@@ -15,11 +15,23 @@ class CustomerController extends Controller
     public function index()
     {
         $customers= Customer::All();
-        
+        foreach($customers as $customer){
+            $customer->view_customer = [
+                'href'      => 'api/customer/' . $customer->id,
+                'method'    => 'GET'
+            ];
+        }
+
+        $response = [
+            'status'    => true,
+            'msg'       => 'Created',
+            'customers' => $customers
+        ];
+
         return response()->json([
-            'status' => true,
-            'data' => $customers, 
-            200]);
+            $customers, 
+            200
+            ]);
         
         //return view('customers.index', compact('customers'));
     }
@@ -43,30 +55,30 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'nama' => 'required',
-            'telepon' => 'required',
-            'email' => 'required'
+            'nama'      => 'required',
+            'telepon'   => 'required',
+            'email'     => 'required'
         ]);
         
-        $nama = $request->input('nama');
-        $telepon = $request->input('telepon');
-        $email = $request->input('email');
+        $nama       = $request->input('nama');
+        $telepon    = $request->input('telepon');
+        $email      = $request->input('email');
 
         $customer = new Customer([
-            'nama' => $nama,
-            'telepon' => $telepon,
-            'email' => $email
+            'nama'      => $nama,
+            'telepon'   => $telepon,
+            'email'     => $email
         ]);
 
         if ($customer->save()) {
             $customer->index =[
-                'href' => 'api/customers',
-                'method' => 'GET',
+                'href'      => 'api/customers',
+                'method'    => 'GET',
             ];
 
             $response = [
-                'msg' => 'created',
-                'data' => $customer
+                'msg'   => 'created',
+                'data'  => $customer
             ];
     
             return response()->json($response, 201);
@@ -90,8 +102,8 @@ class CustomerController extends Controller
         // $show= Customer::where('id','=', $customer)->get();
         // dd($show);
         return response()->json([
-            'status' => true,
-            'data' => $customer, 
+            'status'    => true,
+            'data'      => $customer, 
             200]);
 
             //return view('customers.show', compact('customer'));

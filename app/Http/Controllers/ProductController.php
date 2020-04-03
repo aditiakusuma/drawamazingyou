@@ -15,11 +15,22 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::All();
-        
+        foreach ($products as $product) {
+            $product->view_product =[
+                'href' => 'api/products/' . $product->id,
+                'method' => 'GET'
+            ];
+        }
+
+        $response = [
+            'status'    => true,
+            'msg'       => 'created',
+            'product'   => $products
+        ];
         return response()->json([
-            'status' =>true,
-            'data' => $products,
-            200]);
+            $products,
+            200
+            ]);
         
         return view('product.index',compact('products'));
     }
@@ -42,7 +53,46 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'nama'      => 'required',
+            'harga'     => 'required',
+            'cetak'     => 'required',
+            'premium'   => 'required',
+            'head'      => 'required'
+        ]);
+        
+        $nama       = $request->input('nama');
+        $harga      = $request->input('harga');
+        $cetak      = $request->input('cetak');
+        $premium    = $request->input('premium');
+        $head       = $request->input('head');
+
+        $product = new Product([
+            'nama'      => $nama,
+            'harga'     => $harga,
+            'cetak'     => $cetak,
+            'premium'   => $premium,
+            'head'      => $head,
+        ]);
+
+        if ($product->save()) {
+            $product->index =[
+                'href'      => 'api/products',
+                'method'    => 'GET',
+            ];
+
+            $response = [
+                'msg'   => 'created',
+                'data'  => $product
+            ];
+    
+            return response()->json($response, 201);
+        }
+
+        $response = [
+            'msg' => 'ERROR'
+        ];
+
     }
 
     /**
